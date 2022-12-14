@@ -50,7 +50,7 @@ class Match:
         self.opponent = opponent
         self.outcome = outcome
 
-    def __getMe(self) -> Options:
+    def _getMe(self) -> Options:
         if self.outcome is Outcome.WIN:
             return self.opponent.getStrongest()
         if self.outcome is Outcome.DRAW:
@@ -58,7 +58,7 @@ class Match:
         return self.opponent.getWeakest()
 
     def get_score(self) -> int:
-        return self.outcome.value + self.__getMe().value
+        return self.outcome.value + self._getMe().value
 
 
 def string_to_match(string: str) -> Match:
