@@ -56,11 +56,11 @@ def buildTreeFromFile(filepath: str) -> Item:
 
 head = buildTreeFromFile(FILEPATH)
 directories = deque([head])
-targetSize = 100_000
+target_size = 100_000
 total = 0
 while directories:
     curr = directories.popleft()
-    if curr.size < targetSize:
+    if curr.size < target_size:
         total += curr.size
     
     for item in curr.items:
