@@ -37,7 +37,7 @@ def buildTreeFromFile(filepath: str) -> Item:
                 continue
 
             if line.startswith('$ cd'):
-                cd_target = line.lstrip('$ cd ')
+                cd_target = line[len('$ cd '):]
 
                 if cd_target == '..':
                     current_directory = current_directory.parent
