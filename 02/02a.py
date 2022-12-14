@@ -42,7 +42,7 @@ class Match:
         self.me = me
         self.opponent = opponent
 
-    def __get_outcome(self) -> Outcome:
+    def _get_outcome(self) -> Outcome:
         if self.me > self.opponent:
             return Outcome.WIN
         if self.me is self.opponent:
@@ -50,7 +50,7 @@ class Match:
         return Outcome.LOSS
 
     def get_score(self) -> int:
-        return self.__get_outcome().value + self.me.value
+        return self._get_outcome().value + self.me.value
 
 
 def string_to_match(string: str) -> Match:
