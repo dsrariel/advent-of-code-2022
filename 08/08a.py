@@ -21,23 +21,23 @@ class Forest:
                 return True
         return False
 
-    def _is_tree_left_hidden(self, tree: Tree):
+    def _is_tree_left_hidden(self, tree: Tree) -> bool:
         neighbors = [Tree(tree.x, y) for y in range(0, tree.y)]
         return self._is_tree_smaller_than_any_neighbor(neighbors, tree)
 
-    def _is_tree_right_hidden(self, tree: Tree):
+    def _is_tree_right_hidden(self, tree: Tree) -> bool:
         neighbors = [Tree(tree.x, y) for y in range(tree.y + 1, self.y)]
         return self._is_tree_smaller_than_any_neighbor(neighbors, tree)
 
-    def _is_tree_up_hidden(self, tree: Tree):
+    def _is_tree_up_hidden(self, tree: Tree) -> bool:
         neighbors = [Tree(x, tree.y) for x in range(0, tree.x)]
         return self._is_tree_smaller_than_any_neighbor(neighbors, tree)
 
-    def _is_tree_down_hidden(self, tree: Tree):
+    def _is_tree_down_hidden(self, tree: Tree) -> bool:
         neighbors = [Tree(x, tree.y) for x in range(tree.x + 1, self.x)]
         return self._is_tree_smaller_than_any_neighbor(neighbors, tree)
 
-    def is_tree_hidden(self, tree: Tree):
+    def is_tree_hidden(self, tree: Tree) -> bool:
         return (
             self._is_tree_left_hidden(tree)
             and self._is_tree_right_hidden(tree)
