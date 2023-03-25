@@ -1,8 +1,7 @@
+import sys
 from collections import namedtuple
 from itertools import product
-from typing import List, Tuple, Callable
-
-FILEPATH = "08-ex.input"
+from typing import List
 
 Tree = namedtuple("Tree", "x y")
 
@@ -53,7 +52,8 @@ def create_forest_from_file(filepath: str) -> Forest:
 
 
 def main():
-    forest = create_forest_from_file(FILEPATH)
+    filepath = sys.argv[1]
+    forest = create_forest_from_file(filepath)
     visible_trees_count = sum(
         [not forest.is_tree_hidden(Tree(i, j)) for i, j in product(range(forest.x), range(forest.y))]
     )
