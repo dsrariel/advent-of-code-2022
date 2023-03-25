@@ -15,34 +15,36 @@ class Forest:
     def get_tree_height(self, tree: Tree) -> int:
         return self._matrix[tree.x][tree.y]
 
-    def _is_tree_smaller_than_any_neighbor(self, neighbors: List[Tree], tree: Tree) -> bool:
+    def _get_tree_distance(self, neighbors: List[Tree], tree: Tree) -> int:
+        count = 0
         for neighbor in neighbors:
+            count += 1
             if self.get_tree_height(neighbor) >= self.get_tree_height(tree):
-                return True
-        return False
+                break
+        return count
 
-    def _is_tree_left_hidden(self, tree: Tree):
-        neighbors = [Tree(tree.x, y) for y in range(0, tree.y)]
-        return self._is_tree_smaller_than_any_neighbor(neighbors, tree)
+    def _get_left_distance(self, tree: Tree) -> int:
+        neighbors = [Tree(tree.x, y) for y in range(tree.y - 1, -1, -1)]
+        return self._get_tree_distance(neighbors, tree)
 
-    def _is_tree_right_hidden(self, tree: Tree):
+    def _get_right_distance(self, tree: Tree) -> int:
         neighbors = [Tree(tree.x, y) for y in range(tree.y + 1, self.y)]
-        return self._is_tree_smaller_than_any_neighbor(neighbors, tree)
+        return self._get_tree_distance(neighbors, tree)
 
-    def _is_tree_up_hidden(self, tree: Tree):
-        neighbors = [Tree(x, tree.y) for x in range(0, tree.x)]
-        return self._is_tree_smaller_than_any_neighbor(neighbors, tree)
+    def _get_up_distance(self, tree: Tree) -> int:
+        neighbors = [Tree(x, tree.y) for x in range(tree.x - 1, -1, -1)]
+        return self._get_tree_distance(neighbors, tree)
 
-    def _is_tree_down_hidden(self, tree: Tree):
+    def _get_down_distance(self, tree: Tree) -> int:
         neighbors = [Tree(x, tree.y) for x in range(tree.x + 1, self.x)]
-        return self._is_tree_smaller_than_any_neighbor(neighbors, tree)
+        return self._get_tree_distance(neighbors, tree)
 
-    def is_tree_hidden(self, tree: Tree):
+    def get_tree_scenic_score(self, tree: Tree) -> int:
         return (
-            self._is_tree_left_hidden(tree)
-            and self._is_tree_right_hidden(tree)
-            and self._is_tree_up_hidden(tree)
-            and self._is_tree_down_hidden(tree)
+            self._get_left_distance(tree)
+            * self._get_right_distance(tree)
+            * self._get_up_distance(tree)
+            * self._get_down_distance(tree)
         )
 
 
@@ -54,10 +56,10 @@ def create_forest_from_file(filepath: str) -> Forest:
 def main():
     filepath = sys.argv[1]
     forest = create_forest_from_file(filepath)
-    visible_trees_count = sum(
-        [not forest.is_tree_hidden(Tree(i, j)) for i, j in product(range(forest.x), range(forest.y))]
+    max_scenic_score = max(
+        [forest.get_tree_scenic_score(Tree(i, j)) for i, j in product(range(forest.x), range(forest.y))]
     )
-    print("The number of visible trees in the matrix is:", visible_trees_count)
+    print("The maximum scenic score is:", max_scenic_score)
 
 
 if __name__ == "__main__":
