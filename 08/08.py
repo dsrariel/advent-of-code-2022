@@ -1,3 +1,4 @@
+from itertools import product
 from typing import List, Tuple, Callable
 
 FILEPATH = "08-ex.input"
@@ -52,14 +53,11 @@ def is_tree_visible(matrix: List[List[int]], tree: Tuple[int, int]):
 
 def main():
     matrix = get_tree_matrix_from_file(FILEPATH)
-    print(
-        matrix,
-        is_tree_visible(matrix, (0, 0)) == True,
-        is_tree_visible(matrix, (0, 4)) == True,
-        is_tree_visible(matrix, (5, 4)) == True,
-        is_tree_visible(matrix, (1, 3)) == False,
-        is_tree_visible(matrix, (1, 2)) == True,
-    )
+    x, y = len(matrix), len(matrix[0])
+    for i, j in product(range(x), range(y)):
+        print(is_tree_visible(matrix, (i, j)), end="\n" if j == y - 1 else "\t")
+    visible_trees_count = sum([is_tree_visible(matrix, (i, j)) for i, j in product(range(x), range(y))])
+    print("The number of visible trees in the matrix is:", visible_trees_count)
 
 
 if __name__ == "__main__":
