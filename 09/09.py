@@ -50,21 +50,22 @@ def move_tail(tail: Position, head: Position) -> None:
         tail.move(Direction.R if diff.y > 0 else Direction.L)
 
 
-def get_distinct_count_of_tail_positions(filepath: str) -> int:
-    tail = Position(0, 0)
-    head = Position(0, 0)
-    visited = set([(tail.x, tail.y)])
+def get_distinct_count_of_tail_positions(filepath: str, knots_num: int) -> int:
+    rope = [Position(0, 0) for _ in range(knots_num)]
+    visited = set([(0, 0)])
     with open(filepath) as f:
         for line in f.readlines():
             command = parse_command(line)
             for _ in range(command.count):
-                head.move(command.direction)
-                move_tail(tail, head)
-                visited.add((tail.x, tail.y))
+                rope[0].move(command.direction)
+                for i, node in enumerate(rope[1:]):
+                    move_tail(node, rope[i])
+                visited.add((rope[-1].x, rope[-1].y))
     return len(visited)
 
 
 if __name__ == "__main__":
     filepath = sys.argv[1]
-    count = get_distinct_count_of_tail_positions(filepath)
+    knots_num = 2 if len(sys.argv) == 2 else int(sys.argv[2])
+    count = get_distinct_count_of_tail_positions(filepath, knots_num)
     print(f"there are {count} positions the tail visited at least once.")
